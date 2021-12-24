@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello user</title>
+</head>
+<body>
+<div>
+    <p>Hello User, this Spring Security example</p>
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Roles</th>
+        </tr>
+        <tr>
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td th:text="${user.getRoles()}"></td>
+        </tr>
+    </table>
+    <form th:method="GET" action="/logout">
+        <input type="submit" value="Exit">
+    </form>
+</div>
+</body>
+</html>
