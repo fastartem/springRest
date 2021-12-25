@@ -21,24 +21,14 @@ public class AdminController {
     @Autowired
     RoleService roleService;
 
-//    @RequestMapping(value = "admin", method = RequestMethod.GET)
-//    public String adminPage(ModelMap model) {
-//        model.addAttribute("users", userService.listUsers());
-//        return "admin";
-//    }
-
     @GetMapping("/admin")
     public String adminPage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
-        model.addAttribute("users", userService.listUsers());
-        return "admin";
-    }
-
-    @GetMapping("/user-add")
-    public String addUserForm(User user, ModelMap model) {
         List<Role> roles = roleService.listRoles();
         model.addAttribute("roles", roles);
-        return "user-add";
+        model.addAttribute("user", user);
+        model.addAttribute("newUser", new User());
+        model.addAttribute("users", userService.listUsers());
+        return "admin";
     }
 
     @PostMapping("/user-add")
