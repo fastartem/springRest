@@ -34,7 +34,6 @@ public class AdminController {
     @PostMapping("/user-add")
     public String addUser(User user,
                           @RequestParam(value = "rolesChecked", required = false) String[] roles) {
-
         Set<Role> roleSet = roleService.getRoleSetByName(roles);
         user.setRoles(roleSet);
         userService.add(user);
@@ -47,16 +46,8 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, ModelMap model) {
-        List<Role> roles = roleService.listRoles();
-        model.addAttribute("roles", roles);
-        model.addAttribute("user", userService.findById(id));
-        return "user-update";
-    }
-
-    @PostMapping("/user-update")
-    public String updateUser(User user,
+    @PostMapping("/user-update/{id}")
+    public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam(value = "rolesChecked", required = false) String[] roles) {
         Set<Role> roleSet = roleService.getRoleSetByName(roles);
         user.setRoles(roleSet);
