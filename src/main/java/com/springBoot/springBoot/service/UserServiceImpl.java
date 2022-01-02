@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
     }
 
-    public List<User> listUsers() {
+    public List<User> allUsers() {
         return userDao.listUsers();
     }
 

@@ -16,9 +16,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByName(String name) {
-        User user = (User) entityManager.createQuery("SELECT u FROM User u where u.name=:name")
+        return (User) entityManager.createQuery("SELECT u FROM User u where u.name=:name")
                 .setParameter("name", name).getSingleResult();
-        return user;
     }
 
     @Override
@@ -31,7 +30,6 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     public void update(User user) {
         User entity = findById(user.getId());
-
         entity.setId(user.getId());
         entity.setName(user.getName());
         entity.setPassword(user.getPassword());

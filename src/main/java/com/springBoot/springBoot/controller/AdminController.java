@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.springBoot.springBoot.service.RoleService;
 import com.springBoot.springBoot.service.UserService;
@@ -27,7 +26,7 @@ public class AdminController {
         model.addAttribute("roles", roles);
         model.addAttribute("user", user);
         model.addAttribute("newUser", new User());
-        model.addAttribute("users", userService.listUsers());
+        model.addAttribute("users", userService.allUsers());
         return "admin";
     }
 
