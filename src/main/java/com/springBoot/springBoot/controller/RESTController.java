@@ -27,7 +27,7 @@ public class RESTController {
 
     //get user by ID
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
@@ -39,7 +39,7 @@ public class RESTController {
     }
 
     //update user
-    @PutMapping("/users")
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.update(user);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -47,8 +47,7 @@ public class RESTController {
 
     //delete user by ID
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
