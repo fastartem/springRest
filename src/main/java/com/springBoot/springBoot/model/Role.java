@@ -1,5 +1,8 @@
 package com.springBoot.springBoot.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -21,13 +24,15 @@ public class Role implements GrantedAuthority {
     private String role;
 
     @Transient
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role() {
     }
 
-    public Role(Long id, String role) {
+    @JsonCreator
+    public Role(@JsonProperty("id") Long id, @JsonProperty("role") String role) {
         this.id = id;
         this.role = role;
     }
@@ -49,6 +54,7 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return role;
     }
