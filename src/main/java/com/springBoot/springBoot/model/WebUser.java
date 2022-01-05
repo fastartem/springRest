@@ -2,7 +2,7 @@ package com.springBoot.springBoot.model;
 
 import java.util.Set;
 
-public class UserTransfer {
+public class WebUser {
     public Long getId() {
         return id;
     }

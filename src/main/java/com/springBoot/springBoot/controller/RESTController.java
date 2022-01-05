@@ -2,16 +2,17 @@ package com.springBoot.springBoot.controller;
 
 import com.springBoot.springBoot.model.Role;
 import com.springBoot.springBoot.model.User;
-import com.springBoot.springBoot.model.UserTransfer;
+import com.springBoot.springBoot.model.WebUser;
 import com.springBoot.springBoot.service.RoleService;
 import com.springBoot.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -27,35 +28,20 @@ public class RESTController {
 
     //get all users
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<>(userService.allUsers(), HttpStatus.OK);
+    public List<User> getAllUsers() {
+        return userService.allUsers();
+    }
+
+    //get current user
+    @GetMapping("/user")
+    public User getCurrentUser(@AuthenticationPrincipal User user) {
+        return user;
     }
 
     //get user by ID
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
-        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
-    }
-
-    //save user
-    @PostMapping("/users")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        userService.add(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //update user
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserTransfer user) {
-    //    userService.update(user);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //delete user by ID
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+    public User getUser(@PathVariable("id") long id) {
+        return userService.findById(id);
     }
 
     // get all roles
@@ -64,4 +50,26 @@ public class RESTController {
         return roleService.listRoles();
     }
 
+    //save user
+    @PostMapping("/users")
+    public void saveUser(@RequestBody WebUser webUser) {
+        Set<Role> roles = roleService.getRoleSetByName(webUser.getRoles().toArray(new String[0]));
+
+        User user = new User(webUser.getId(), webUser.getName(), webUser.getPassword(), roles);
+        userService.add(user);
+    }
+
+    //update user
+    @PutMapping("/users/{id}")
+    public void updateUser(@RequestBody WebUser webUser) {
+        Set<Role> roles = roleService.getRoleSetByName(webUser.getRoles().toArray(new String[0]));
+        User user = new User(webUser.getId(), webUser.getName(), webUser.getPassword(), roles);
+        userService.update(user);
+    }
+
+    //delete user by ID
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+    }
 }
